@@ -1,5 +1,7 @@
 #include "corelib/core.h"
+#include "include/control_seq.h"
 #include "include/status.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -27,6 +29,8 @@ int main() {
 }
 
 int execution_loop(char *input_buffer, int input_buffer_size) {
+  const float DEFAULT_BUFFER_GROWTH_RATE = 1.25;
+
   int buffer_index = 0;
   char current_char;
 
@@ -38,11 +42,45 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
     }
 
     switch (current_char) {
-    default: {
-      putchar(current_char);
-      fflush(stdout);
-      break;
-    }
+      case ASCII_LF: {
+        // Null terminating it
+        input_buffer[buffer_index + 1] = '\x00';
+        putchar('\n');
+
+        // Here one would call the parser and then the process manager
+        
+        fflush(stdout);
+        
+        for (int i = 0; input_buffer[i] != '\x00'; i++) {
+          printf("%c", input_buffer[i]);
+        }
+        putchar('\n');
+        fflush(stdout);
+        
+        memset(input_buffer, 0, buffer_index);
+        buffer_index = 0;
+        break;
+      } 
+
+      default: {
+        if (input_buffer_size >= buffer_index) {
+          // Buffer is too small, will resize it now
+          input_buffer_size = (int)(input_buffer_size * DEFAULT_BUFFER_GROWTH_RATE);
+          // casting the result to int to avoid issues with realloc
+          
+          input_buffer = realloc(input_buffer, input_buffer_size);
+          if (input_buffer == NULL) {
+            perror("realloc");
+            break;
+          }
+        }
+
+        input_buffer[buffer_index++] = current_char;
+
+        putchar(current_char);
+        fflush(stdout);
+        break;
+      }
     }
   }
 
