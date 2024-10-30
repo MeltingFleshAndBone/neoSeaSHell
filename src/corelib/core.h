@@ -3,5 +3,7 @@
 
 void terminal_mode_switch(int mode); 
 
+int split(char *buffer, char *dest[]);
+
 #endif // !_CORE_H_
 

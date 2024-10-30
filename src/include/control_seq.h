@@ -7,7 +7,7 @@
 // Suspends the current process (background)
 #define ASCII_SUB  '\x1A'  // Substitute (Ctrl+Z)
 // Clears the screen
-#define ASCIIFF    '\x0C'  // Form Feed (Ctrl+L)
+#define ASCII_FF   '\x0C'  // Form Feed (Ctrl+L)
 // Moves the cursor to the beginning of the line
 #define ASCII_SOH  '\x01'  // Start of Heading (Ctrl+A)
 // Moves the cursor to the end of the line
@@ -18,6 +18,8 @@
 #define ASCII_CR   '\x0D'  // Carriage Return (CR)
 // Escape character, often used in terminal control sequences
 #define ASCII_ESC  '\x1B'  // Escape (ESC)
+// Adds a TAB character
+#define ASCII_TAB  '\x09'
 // Deletes from the cursor to the end of the line
 #define ASCII_VT   '\x0B'  // Vertical Tab (VT)
 
