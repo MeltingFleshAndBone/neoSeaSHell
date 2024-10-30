@@ -10,10 +10,11 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/corelib)
 # Specify the source files for the library
 set(LIBRARY_SOURCES
     src/corelib/term.c
+    src/corelib/resolver.c
 )
 
 # Create a library from term.c
-add_library(term_lib 
+add_library(core
   STATIC ${LIBRARY_SOURCES}
 )
 
@@ -24,8 +25,8 @@ set(EXECUTABLE_SOURCE
 
 # Create the executable and link it with the library
 add_executable(SeaSHell ${EXECUTABLE_SOURCE})
-target_link_libraries(SeaSHell PRIVATE term_lib)
+target_link_libraries(SeaSHell PRIVATE core)
 
 # Set output directories for the library
-set_target_properties(term_lib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_PATH})
+set_target_properties(core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_PATH})
 
