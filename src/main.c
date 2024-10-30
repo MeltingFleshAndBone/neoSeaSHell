@@ -1,9 +1,9 @@
 #include "corelib/core.h"
 #include "include/control_seq.h"
 #include "include/status.h"
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 int execution_loop(char *input_buffer, int input_buffer_size);
@@ -32,6 +32,7 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
   const float DEFAULT_BUFFER_GROWTH_RATE = 1.25;
 
   int buffer_index = 0;
+  int buffer_narg = 0;
   char current_char;
 
   while (1 == 1) {
@@ -42,45 +43,69 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
     }
 
     switch (current_char) {
-      case ASCII_LF: {
-        // Null terminating it
-        input_buffer[buffer_index + 1] = '\x00';
-        putchar('\n');
+    case ASCII_ETX: {
+      // This does nothing at all, even tho it was supposed to...
+      return STAT_SUCCESS;
+    }
+    case ASCII_CR: {
+      break;
+    }
+    case ASCII_TAB: {
+      break;
+    }
+    case ASCII_EOF: {
+      return STAT_SUCCESS;
+    }
+    case ASCII_FF: {
+      printf("\033c");
+      fflush(stdout);
+      break;
+    }
+    case ASCII_LF: {
+      // Null terminating it
+      input_buffer[buffer_index + 1] = '\x00';
+      putchar('\n');
+      fflush(stdout);
 
-        // Here one would call the parser and then the process manager
-        
-        fflush(stdout);
-        
-        for (int i = 0; input_buffer[i] != '\x00'; i++) {
-          printf("%c", input_buffer[i]);
+      for (int i = 0; input_buffer[i] != '\x00'; i++) {
+        if (input_buffer[i] == ' ') {
+          buffer_narg++;
         }
-        putchar('\n');
-        fflush(stdout);
-        
-        memset(input_buffer, 0, buffer_index);
-        buffer_index = 0;
-        break;
-      } 
-
-      default: {
-        if (input_buffer_size >= buffer_index) {
-          // Buffer is too small, will resize it now
-          input_buffer_size = (int)(input_buffer_size * DEFAULT_BUFFER_GROWTH_RATE);
-          // casting the result to int to avoid issues with realloc
-          
-          input_buffer = realloc(input_buffer, input_buffer_size);
-          if (input_buffer == NULL) {
-            perror("realloc");
-            break;
-          }
-        }
-
-        input_buffer[buffer_index++] = current_char;
-
-        putchar(current_char);
-        fflush(stdout);
-        break;
       }
+
+      // tokenizing the buffer
+      char *temp_buffer[buffer_narg];
+      split(input_buffer, temp_buffer);
+      temp_buffer[buffer_narg + 1] = NULL;
+
+      memset(input_buffer, 0, buffer_index);
+      memset(temp_buffer, 0, buffer_narg);
+      buffer_narg = buffer_index = 0;
+      break;
+    }
+
+    default: {
+      if (input_buffer_size >= buffer_index && buffer_index > 0) {
+        // Buffer is too small, will resize it now
+        /* The > 0 check is needed because buffer_index is set to 0
+         * after ASCII_LF.*/
+        input_buffer_size =
+            (int)(input_buffer_size * DEFAULT_BUFFER_GROWTH_RATE);
+        // casting the result to int to avoid issues with realloc
+
+        input_buffer = realloc(input_buffer, input_buffer_size);
+        if (input_buffer == NULL) {
+          perror("realloc");
+          break;
+        }
+      }
+
+      input_buffer[buffer_index++] = current_char;
+
+      putchar(current_char);
+      fflush(stdout);
+      break;
+    }
     }
   }
 
