@@ -14,8 +14,7 @@ int main() {
   char *input_buffer;
   int input_buffer_size = DEFAULT_INPUT_BUFFER_SIZE;
 
-  input_buffer = calloc(input_buffer_size, sizeof(char));
-  if (input_buffer == NULL) {
+  input_buffer = calloc(input_buffer_size, sizeof(char)); if (input_buffer == NULL) {
     perror("calloc");
     return STAT_MEMALLOCERR;
   }
@@ -30,6 +29,7 @@ int main() {
 
 int execution_loop(char *input_buffer, int input_buffer_size) {
   const float DEFAULT_BUFFER_GROWTH_RATE = 1.25;
+  const int DEFAULT_INPUT_BUFFER_SIZE = input_buffer_size;
 
   int buffer_index = 0;
   int buffer_narg = 0;
@@ -67,25 +67,16 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
       putchar('\n');
       fflush(stdout);
 
-      for (int i = 0; input_buffer[i] != '\x00'; i++) {
-        if (input_buffer[i] == ' ') {
-          buffer_narg++;
-        }
-      }
-
-      // tokenizing the buffer
-      char *temp_buffer[buffer_narg];
-      split(input_buffer, temp_buffer);
-      temp_buffer[buffer_narg + 1] = NULL;
+      proc_manager(input_buffer);
 
       memset(input_buffer, 0, buffer_index);
-      memset(temp_buffer, 0, buffer_narg);
-      buffer_narg = buffer_index = 0;
+      buffer_index = 0;
+      input_buffer_size = DEFAULT_INPUT_BUFFER_SIZE;
       break;
     }
 
     default: {
-      if (input_buffer_size >= buffer_index && buffer_index > 0) {
+      if (buffer_index >= input_buffer_size) {
         // Buffer is too small, will resize it now
         /* The > 0 check is needed because buffer_index is set to 0
          * after ASCII_LF.*/

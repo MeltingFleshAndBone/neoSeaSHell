@@ -10,7 +10,8 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/corelib)
 # Specify the source files for the library
 set(LIBRARY_SOURCES
     src/corelib/term.c
-    src/corelib/resolver.c
+    src/corelib/expander.c
+    src/corelib/proc.c
 )
 
 # Create a library from term.c
