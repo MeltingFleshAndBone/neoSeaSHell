@@ -14,7 +14,8 @@ int main() {
   char *input_buffer;
   int input_buffer_size = DEFAULT_INPUT_BUFFER_SIZE;
 
-  input_buffer = calloc(input_buffer_size, sizeof(char)); if (input_buffer == NULL) {
+  input_buffer = calloc(input_buffer_size, sizeof(char));
+  if (input_buffer == NULL) {
     perror("calloc");
     return STAT_MEMALLOCERR;
   }
