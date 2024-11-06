@@ -34,10 +34,22 @@ int proc_manager(char *buffer) {
     wait(NULL); // Wait for the child process to finish
   } else {
     // Child process
-    execvp(fields[0], fields); // Execute the process with arguments
-    // If execvp returns, it must have failed
-    perror("execvp");
-    return 0;
+    
+    // Checking for in-builts
+    {
+      if (strcmp(fields[0], "cd") == 0) {
+        chdir(fields[1]);
+        return 0;
+      }
+    }
+
+    // If it's not an in-buil, try to execute the binary
+    {
+      execvp(fields[0], fields); // Execute the process with arguments
+      // If execvp returns, it must have failed
+      perror("execvp");
+      return 0;
+    }
   }
 
   memset(fields, '\x00', word_count);
