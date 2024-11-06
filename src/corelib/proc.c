@@ -1,6 +1,7 @@
 #include "../include/status.h"
 #include "core.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -23,6 +24,10 @@ int proc_manager(char *buffer) {
   fields[word_count + 1] = NULL;
 
   expand(fields);
+
+  if (strcmp(fields[0], "exit") == 0) {
+    exit(1);
+  }
 
   pid_t pid = fork();
   if (pid < 0) {
