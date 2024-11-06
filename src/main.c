@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 int execution_loop(char *input_buffer, int input_buffer_size);
 
@@ -35,8 +36,15 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
   int buffer_index = 0;
   int buffer_narg = 0;
   char current_char;
+  bool display_handle = true;
 
   while (1 == 1) {
+
+    if (display_handle == true) {
+      print_handle(0);
+      fflush(stdout);
+      display_handle = false;
+    }
 
     if (read(STDIN_FILENO, &current_char, 1) == -1) {
       perror("read");
@@ -60,6 +68,7 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
     case ASCII_FF: {
       printf("\033c");
       fflush(stdout);
+      display_handle = true;
       break;
     }
     case ASCII_LF: {
@@ -73,6 +82,7 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
       memset(input_buffer, 0, buffer_index);
       buffer_index = 0;
       input_buffer_size = DEFAULT_INPUT_BUFFER_SIZE;
+      display_handle = true;
       break;
     }
 

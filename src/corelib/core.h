@@ -9,5 +9,7 @@ int expand(char *buffer[]);
 
 int proc_manager(char *buffer);
 
+void print_handle(int type);
+
 #endif // !_CORE_H_
 
