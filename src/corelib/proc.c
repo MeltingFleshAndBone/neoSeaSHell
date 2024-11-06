@@ -2,6 +2,8 @@
 #include "core.h"
 #include <stdio.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 int proc_manager(char *buffer) {
   int word_count = 0;
@@ -22,7 +24,21 @@ int proc_manager(char *buffer) {
 
   expand(fields);
 
-
+  pid_t pid = fork();
+  if (pid < 0) {
+    // Fork failed
+    perror("Fork");
+    return 0;
+  } else if (pid > 0) {
+    // Parent process
+    wait(NULL); // Wait for the child process to finish
+  } else {
+    // Child process
+    execvp(fields[0], fields); // Execute the process with arguments
+    // If execvp returns, it must have failed
+    perror("execvp");
+    return 0;
+  }
 
   memset(fields, '\x00', word_count);
   return STAT_SUCCESS;
