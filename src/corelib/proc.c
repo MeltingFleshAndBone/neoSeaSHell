@@ -53,7 +53,7 @@ int proc_manager(char *buffer) {
       execvp(fields[0], fields); // Execute the process with arguments
       // If execvp returns, it must have failed
       perror("execvp");
-      return 0;
+      exit(0);
     }
   }
 
