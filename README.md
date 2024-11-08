@@ -58,15 +58,14 @@ After a successful build, the compiled binary will be located in the `build/bin/
 
 Below is the current list of priorities for ongoing development:
 
-1. **Backspace Support**: Add support for backspacing, as currently, any typing errors cannot be corrected.
-2. **Tokenization and Parsing**: Implement functions to handle tokenization, aliasing, and basic parsing of user commands.
-3. **Process Management**: Develop functionality to execute system processes and manage child processes.
-4. **Built-in Commands**: Add essential shell commands such as `cd`, `pwd`, and others. (Work in progress)
-5. **Basic Prompt**: A basic shell prompt string will be implemented, allowing the user to interact with the shell. (Work in progress)
-6. **Error Handling**: Create a custom error-handling system to replace the default `perror` function and improve error reporting.
-7. **Command History**: Implement a mechanism for tracking and recalling previously executed commands.
-8. **Configuration Support**: Add the ability to read and apply configuration settings from a configuration file.
-9. **I/O Redirection and Piping**: Implement support for I/O redirection (stdin, stdout) and piping between commands.
-10. **Job Control**: Introduce job control features such as `fg`, `bg`, and `jobs` for managing background and foreground processes.
-11. **Tab Completion**: Research and implement simple tab completion to enhance the user experience.
-12. **Customizable Prompt**: Enable users to configure their shell prompt string for a personalized experience.
+1. **Tokenization and Parsing**: Implement functions to handle tokenization, aliasing, and basic parsing of user commands. (Partial Implementation)
+2. **Process Management**: Develop functionality to execute system processes and manage child processes. (Partial Implementation)
+3. **Built-in Commands**: Add essential shell commands such as `cd`, `pwd`, and others. (Work in progress)
+4. **Basic Prompt**: A basic shell prompt string will be implemented, allowing the user to interact with the shell. (Work in progress)
+5. **Error Handling**: Create a custom error-handling system to replace the default `perror` function and improve error reporting.
+6. **Command History**: Implement a mechanism for tracking and recalling previously executed commands.
+7. **Configuration Support**: Add the ability to read and apply configuration settings from a configuration file.
+8. **I/O Redirection and Piping**: Implement support for I/O redirection (stdin, stdout) and piping between commands.
+9. **Job Control**: Introduce job control features such as `fg`, `bg`, and `jobs` for managing background and foreground processes.
+10. **Tab Completion**: Research and implement simple tab completion to enhance the user experience.
+11. **Customizable Prompt**: Enable users to configure their shell prompt string for a personalized experience.
