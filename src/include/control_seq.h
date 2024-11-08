@@ -4,6 +4,8 @@
 #define ASCII_ETX  '\x03'  // End of Text (Ctrl+C)
 // Signals end-of-file (EOF) in input
 #define ASCII_EOF  '\x04'  // End of Transmission (Ctrl+D)
+// Moves cursor one position back and removes the character
+#define ASCII_DEL  '\x7f'
 // Suspends the current process (background)
 #define ASCII_SUB  '\x1A'  // Substitute (Ctrl+Z)
 // Clears the screen

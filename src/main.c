@@ -1,11 +1,11 @@
 #include "corelib/core.h"
 #include "include/control_seq.h"
 #include "include/status.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdbool.h>
 
 int execution_loop(char *input_buffer, int input_buffer_size);
 
@@ -69,6 +69,18 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
       printf("\033c");
       fflush(stdout);
       display_handle = true;
+      break;
+    }
+    case ASCII_DEL: {
+      // Backspace
+      if (buffer_index > 0) {
+        printf("\b \b");
+        fflush(stdout);
+        
+        // Deleting char from buffer
+        input_buffer[--buffer_index] = '\x00';
+      }
+
       break;
     }
     case ASCII_LF: {
