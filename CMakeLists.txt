@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Set the project name
-project(SeaSHell VERSION 0.1.0 LANGUAGES C)
+project(SeaSHell VERSION 1.0.0 LANGUAGES C)
 
 # Create a directory for binaries
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
