@@ -22,6 +22,7 @@ int main() {
   }
   terminal_mode_switch(0);
 
+  init_history();
   execution_loop(input_buffer, input_buffer_size);
 
   terminal_mode_switch(1);
@@ -37,6 +38,7 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
   int buffer_narg = 0;
   char current_char;
   bool display_handle = true;
+  int history_index = -1; // -1 Represents current, 0 = 1st index
 
   while (1 == 1) {
 
@@ -71,6 +73,60 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
       display_handle = true;
       break;
     }
+    case '\033': {
+      // Check for escape sequence
+      char seq[2];
+      if (read(STDIN_FILENO, &seq[0], 1) != 1) break;
+      if (read(STDIN_FILENO, &seq[1], 1) != 1) break;
+
+      if (seq[0] == '[') {
+        if (seq[1] == 'A') { // Up arrow
+          // Clear current line
+          while (buffer_index > 0) {
+            printf("\b \b");
+            buffer_index--;
+            fflush(stdout);
+          }
+
+          history_index++;
+
+          char *cmd = get_history(history_index);
+          if (cmd != NULL) {
+            strncpy(input_buffer, cmd, input_buffer_size - 1);
+            input_buffer[input_buffer_size - 1] = '\0';
+            buffer_index = strlen(input_buffer);
+            printf("%s", input_buffer);
+          } else {
+            history_index--;
+          }
+        }
+        else if (seq[1] == 'B') { // Down arrow
+          // Clear current line
+          while (buffer_index > 0) {
+            printf("\b \b");
+            buffer_index--;
+          }
+
+          history_index--;
+          if (history_index >= 0) {
+            char *cmd = get_history(history_index);
+            if (cmd != NULL) {
+              strncpy(input_buffer, cmd, input_buffer_size - 1);
+              input_buffer[input_buffer_size - 1] = '\0';
+              buffer_index = strlen(input_buffer);
+              printf("%s", input_buffer);
+            }
+          } else {
+            // Clear line when going past most recent history
+            memset(input_buffer, 0, input_buffer_size);
+            buffer_index = 0;
+            history_index = -1;
+          }
+        }
+      }
+      fflush(stdout);
+      break;
+    }
     case ASCII_DEL: {
       // Backspace
       if (buffer_index > 0) {
@@ -84,14 +140,21 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
       break;
     }
     case ASCII_LF: {
-      // Null terminating it
-      input_buffer[buffer_index + 1] = '\x00';
+      // Null terminate the input buffer
+      input_buffer[buffer_index] = '\0';
       putchar('\n');
       fflush(stdout);
 
-      proc_manager(input_buffer);
+      // Only handle non-empty commands
+      if (buffer_index > 0) {
+        add_history(input_buffer);
+        history_index = -1; // Reset history navigation
+        // Process the command
+        proc_manager(input_buffer);
+      }
 
-      memset(input_buffer, 0, buffer_index);
+      // Reset buffer state
+      memset(input_buffer, 0, input_buffer_size);
       buffer_index = 0;
       input_buffer_size = DEFAULT_INPUT_BUFFER_SIZE;
       display_handle = true;
