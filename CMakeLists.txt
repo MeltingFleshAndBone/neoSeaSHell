@@ -16,7 +16,7 @@ set(LIBRARY_SOURCES
     src/corelib/hist.c
 )
 
-# Create a library from term.c
+# Create a library from the specified sources
 add_library(core
   STATIC ${LIBRARY_SOURCES}
 )
@@ -32,4 +32,3 @@ target_link_libraries(SeaSHell PRIVATE core)
 
 # Set output directories for the library
 set_target_properties(core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_PATH})
-

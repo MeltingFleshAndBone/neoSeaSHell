@@ -57,15 +57,24 @@ After a successful build, the compiled binary will be located in the `build/bin/
 ## Development Roadmap
 
 Below is the current list of priorities for ongoing development:
+**Development Roadmap**
 
-1. **Tokenization and Parsing**: Implement functions to handle tokenization, aliasing, and basic parsing of user commands. (Partial Implementation)
-2. **Process Management**: Develop functionality to execute system processes and manage child processes. (Partial Implementation)
-3. **Built-in Commands**: Add essential shell commands such as `cd`, `pwd`, and others. (Partial Implementation)
-4. **Basic Prompt**: A basic shell prompt string will be implemented. (Partial Implementation)
-5. **Error Handling**: Create a custom error-handling system to replace the default `perror` function and improve error reporting.
-6. **Command History**: Implement a mechanism for tracking and recalling previously executed commands. (Partial Implementation)
-7. **Configuration Support**: Add the ability to read and apply configuration settings from a configuration file.
-8. **I/O Redirection and Piping**: Implement support for I/O redirection (stdin, stdout) and piping between commands.
-9. **Job Control**: Introduce job control features such as `fg`, `bg`, and `jobs` for managing background and foreground processes.
-10. **Tab Completion**: Research and implement simple tab completion to enhance the user experience.
-11. **Customizable Prompt**: Enable users to configure their shell prompt string for a personalized experience.
+### High Priority
+
+* **Tokenization and Parsing**: Implement functions to handle tokenization, aliasing, and basic parsing of user commands. (Partial Implementation)
+* **Process Management**: Develop functionality to execute system processes and manage child processes. (Partial Implementation)
+* **Built-in Commands**: Add essential shell commands such as `cd`, `pwd`, and others. (Partial Implementation)
+* **Basic Prompt**: A basic shell prompt string will be implemented. (Partial Implementation)
+
+### Medium Priority
+
+* **Error Handling**: Create a custom error-handling system to replace the default `perror` function and improve error reporting.
+* **Command History**: Implement a mechanism for tracking and recalling previously executed commands. (Partial Implementation)
+* **Configuration Support**: Add the ability to read and apply configuration settings from a configuration file.
+
+### Low Priority
+
+* **I/O Redirection and Piping**: Implement support for I/O redirection (stdin, stdout) and piping between commands.
+* **Job Control**: Introduce job control features such as `fg`, `bg`, and `jobs` for managing background and foreground processes.
+* **Tab Completion**: Research and implement simple tab completion to enhance the user experience.
+* **Customizable Prompt**: Enable users to configure their shell prompt string for a personalized experience.
