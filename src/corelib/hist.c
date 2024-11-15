@@ -125,11 +125,11 @@ char *get_history(int index) {
   return history[hist_count - index - 1];
 }
 
-void free_history() {
+int free_history() {
   /* Free all history memory
    * Frees the history array and all command strings
    * Resets history tracking variables
-   * Returns: void */
+   * Returns: STAT_SUCCESS on success, -1 on failure */
 
   if (history != NULL) {
     for (int i = 0; i < hist_count; i++) {
@@ -139,5 +139,7 @@ void free_history() {
     history = NULL;
     hist_count = 0;
     hist_size = 0;
+    return STAT_SUCCESS;
   }
+  return -1;
 }

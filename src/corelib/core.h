@@ -5,15 +5,16 @@
 /**
  * Switch terminal between raw and cooked input modes
  * @param mode 0 for raw mode, 1 for cooked mode
+ * @return STAT_SUCCESS on success, -1 on failure
  */
-void terminal_mode_switch(int mode);
+int terminal_mode_switch(int mode);
 
 /* String manipulation functions */
 /**
  * Split a string into an array of tokens on spaces
  * @param buffer Input string to split
  * @param dest Array to store resulting tokens
- * @return Number of tokens found
+ * @return Number of tokens found on success, -1 on error
  */
 int split(char *buffer, char *dest[]);
 
@@ -43,31 +44,35 @@ int proc_manager(char *buffer);
 /**
  * Print shell prompt with formatting
  * @param type 0 for full prompt, 1 for simple prompt
+ * @return STAT_SUCCESS on success, -1 on failure
  */
-void print_handle(int type);
+int print_handle(int type);
 
 /* Command history functions */
 /**
  * Initialize command history system
+ * @return STAT_SUCCESS on success, -1 on failure
  */
-void init_history(void);
+int init_history(void);
 
 /**
  * Add command to history
  * @param cmd Command string to add
+ * @return STAT_SUCCESS on success, -1 on failure
  */
-void add_history(const char *cmd);
+int add_history(const char *cmd);
 
 /**
  * Retrieve command from history by index
  * @param index History entry index
- * @return Command string at index
+ * @return Command string at index on success, NULL on failure
  */
 char *get_history(int index);
 
 /**
  * Free all history entries and cleanup
+ * @return STAT_SUCCESS on success, -1 on failure
  */
-void free_history(void);
+int free_history(void);
 
 #endif // !_CORE_H_
