@@ -13,6 +13,7 @@ set(LIBRARY_SOURCES
     src/corelib/expander.c
     src/corelib/proc.c
     src/corelib/handle.c
+    src/corelib/hist.c
 )
 
 # Create a library from term.c
