@@ -6,6 +6,18 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+struct passwd *get_user_info() {
+  uid_t uid = getuid();
+  struct passwd *pw = getpwuid(uid);
+
+  if (pw == NULL) {
+    perror("getpwuid");
+    return NULL;
+  }
+
+  return pw;
+}
+
 int split(char *string, char *dest[]) {
   char *token;
   int count = 0;
@@ -15,35 +27,66 @@ int split(char *string, char *dest[]) {
 
   // Continue tokenizing until no more tokens are found
   while (token != NULL) {
-    dest[count++] = token;     // Store the token in the destination array
-    token = strtok(NULL, " "); // Get the next token
+    dest[count++] = token;
+    token = strtok(NULL, " ");
   }
 
-  // Return the number of tokens found
   return count;
 }
 
 int expand(char *buffer[]) {
-  uid_t uid = getuid();
-  struct passwd *pw = getpwuid(uid);
-
+  struct passwd *pw = get_user_info();
   if (pw == NULL) {
-    perror("getpwuid");
     return -1;
   }
 
   for (int i = 0; buffer[i] != NULL; i++) {
-    fflush(stdout);
+    // Handle home directory expansion
     if (strcmp(buffer[i], "~") == 0) {
       char *homeDir = pw->pw_dir;
-      // Allocate memory for the expanded path
       buffer[i] = malloc(strlen(homeDir) + 1);
       if (buffer[i] == NULL) {
         perror("malloc");
         return -1;
       }
-      strcpy(buffer[i], homeDir); // Copy the home directory path
-      fflush(stdout);
+      strcpy(buffer[i], homeDir);
+    }
+    // Handle ~user expansion
+    else if (buffer[i][0] == '~' && buffer[i][1] != '\0') {
+      struct passwd *targetpw;
+      char *username = buffer[i] + 1;
+      targetpw = getpwnam(username);
+      if (targetpw != NULL) {
+        buffer[i] = malloc(strlen(targetpw->pw_dir) + 1);
+        if (buffer[i] == NULL) {
+          perror("malloc");
+          return -1;
+        }
+        strcpy(buffer[i], targetpw->pw_dir);
+      }
+    }
+    // Handle $HOME expansion
+    else if (strcmp(buffer[i], "$HOME") == 0) {
+      char *homeDir = getenv("HOME");
+      if (homeDir != NULL) {
+        buffer[i] = malloc(strlen(homeDir) + 1);
+        if (buffer[i] == NULL) {
+          perror("malloc");
+          return -1;
+        }
+        strcpy(buffer[i], homeDir);
+      }
+    }
+    // Handle $USER expansion
+    // I'll remove this eventually when I implement actual env vars
+    else if (strcmp(buffer[i], "$USER") == 0) {
+      char *user = pw->pw_name;
+      buffer[i] = malloc(strlen(user) + 1);
+      if (buffer[i] == NULL) {
+        perror("malloc");
+        return -1;
+      }
+      strcpy(buffer[i], user);
     }
   }
 

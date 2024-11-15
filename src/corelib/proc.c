@@ -26,7 +26,18 @@ int proc_manager(char *buffer) {
   expand(fields);
 
   if (strcmp(fields[0], "exit") == 0) {
-    exit(1);
+    exit(0);
+  } else if (strcmp(fields[0], "cd") == 0) {
+    if (fields[1] == NULL) {
+      // Will make this go to `~` eventually
+      fprintf(stderr, "No path specified.\n");
+      return STAT_CHDIRERR;
+    }
+    if (chdir(fields[1]) != 0) {
+      perror("cd");
+      return STAT_CHDIRERR;
+    }
+    return STAT_SUCCESS;
   }
 
   pid_t pid = fork();
@@ -39,16 +50,7 @@ int proc_manager(char *buffer) {
     wait(NULL); // Wait for the child process to finish
   } else {
     // Child process
-    
-    // Checking for in-builts
-    {
-      if (strcmp(fields[0], "cd") == 0) {
-        chdir(fields[1]);
-        return 0;
-      }
-    }
 
-    // If it's not an in-buil, try to execute the binary
     {
       execvp(fields[0], fields); // Execute the process with arguments
       // If execvp returns, it must have failed
