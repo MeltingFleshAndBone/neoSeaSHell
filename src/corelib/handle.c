@@ -6,6 +6,20 @@
 #include <string.h>
 
 void print_handle(int type) {
+  /* Print the command prompt handle
+   * Displays username, hostname, and current directory in a formatted prompt
+   * Supports two display types:
+   *   type 0: Full prompt with colors - username@hostname:cwd\n$
+   *   type 1: Simple prompt - username$
+   * Colors used:
+   *   Green: username@hostname
+   *   Blue: current working directory 
+   *   Yellow: $ prompt
+   * 
+   * Params:
+   *   type: Integer specifying prompt type (0 or 1)
+   * Returns: void */
+
   // For some reason it doesn't let me use const int...
   #define HOST_NAME_MAX 64
   #define PATH_MAX 4096

@@ -7,6 +7,19 @@
 #include <unistd.h>
 
 int proc_manager(char *buffer) {
+  /* Process manager for command execution
+   * Takes a command string and handles execution via fork/exec
+   * Handles built-in commands like cd and exit directly
+   * For external commands, forks and executes in child process
+   * 
+   * Params:
+   *   buffer: Null-terminated command string to execute
+   * Returns:
+   *   STAT_SUCCESS on successful execution
+   *   STAT_CHDIRERR on cd command failure 
+   *   STAT_FORKERR on fork failure
+   *   STAT_EXECERR on exec failure */
+
   int word_count = 0;
   fflush(stdout);
 
@@ -44,19 +57,16 @@ int proc_manager(char *buffer) {
   if (pid < 0) {
     // Fork failed
     perror("Fork");
-    return 0;
+    return STAT_FORKERR;
   } else if (pid > 0) {
     // Parent process
     wait(NULL); // Wait for the child process to finish
   } else {
     // Child process
-
-    {
-      execvp(fields[0], fields); // Execute the process with arguments
-      // If execvp returns, it must have failed
-      perror("execvp");
-      exit(0);
-    }
+    execvp(fields[0], fields); // Execute the process with arguments
+    // If execvp returns, it must have failed
+    perror("execvp");
+    exit(STAT_EXECERR);
   }
 
   memset(fields, '\x00', word_count);
