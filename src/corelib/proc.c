@@ -51,6 +51,10 @@ int proc_manager(char *buffer) {
       return STAT_CHDIRERR;
     }
     return STAT_SUCCESS;
+  } else if (strcmp(fields[0], "export") == 0) {
+    // Set an env var
+    setenv(fields[1],fields[2], 1);
+    return STAT_SUCCESS;
   }
 
   pid_t pid = fork();
