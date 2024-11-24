@@ -61,15 +61,15 @@ Below is the current list of priorities for ongoing development:
 
 ### High Priority
 
-* **Tokenization and Parsing**: Implement functions to handle tokenization, aliasing, and basic parsing of user commands. (Partial Implementation)
-* **Process Management**: Develop functionality to execute system processes and manage child processes. (Partial Implementation)
+* **Tokenization and Parsing**: Implement functions to handle tokenization, aliasing, and basic parsing of user commands. (Implemented)
+* **Process Management**: Develop functionality to execute system processes and manage child processes. (Implemented)
 * **Built-in Commands**: Add essential shell commands such as `cd`, `pwd`, and others. (Partial Implementation)
-* **Basic Prompt**: A basic shell prompt string will be implemented. (Partial Implementation)
+* **Basic Prompt**: A basic shell prompt string will be implemented. (Implemented)
 
 ### Medium Priority
 
 * **Error Handling**: Create a custom error-handling system to replace the default `perror` function and improve error reporting.
-* **Command History**: Implement a mechanism for tracking and recalling previously executed commands. (Partial Implementation)
+* **Command History**: Implement a mechanism for tracking and recalling previously executed commands. (Implemented)
 * **Configuration Support**: Add the ability to read and apply configuration settings from a configuration file.
 
 ### Low Priority
