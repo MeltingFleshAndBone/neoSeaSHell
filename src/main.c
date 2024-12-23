@@ -167,9 +167,6 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
       putchar('\n');
       fflush(stdout);
 
-      printf("%s\n", input_buffer);
-      fflush(stdout);
-
       // Only handle non-empty commands
       if (buffer_index > 0) {
         add_history(input_buffer);
