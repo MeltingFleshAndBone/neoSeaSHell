@@ -56,7 +56,6 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
 
     switch (current_char) {
     case ASCII_ETX: {
-      // This does nothing at all, even tho it was supposed to...
       return STAT_SUCCESS;
     }
     case ASCII_CR: {
@@ -77,19 +76,21 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
     case '\033': {
       // Check for escape sequence
       char seq[2];
-      if (read(STDIN_FILENO, &seq[0], 1) != 1) break;
-      if (read(STDIN_FILENO, &seq[1], 1) != 1) break;
+      if (read(STDIN_FILENO, &seq[0], 1) != 1)
+        break;
+      if (read(STDIN_FILENO, &seq[1], 1) != 1)
+        break;
 
       if (seq[0] == '[') {
         if (seq[1] == 'D') { // Left Arrow
           if (cursor_index > 0) {
             printf("\033[D"); // Move the cursor to the left
             --cursor_index;
-            }
+          }
         }
         if (seq[1] == 'C') { // Right Arrow
           if (cursor_index < buffer_index) {
-            printf("\033[C"); // Move the cursor to the right 
+            printf("\033[C"); // Move the cursor to the right
             cursor_index++;
           }
         }
@@ -113,8 +114,7 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
           } else {
             history_index--;
           }
-        }
-        else if (seq[1] == 'B') { // Down arrow
+        } else if (seq[1] == 'B') { // Down arrow
           // Clear current line
           while (buffer_index > 0) {
             printf("\b \b");
@@ -146,7 +146,7 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
       if (buffer_index > 0) {
         printf("\b \b");
         fflush(stdout);
-        
+
         // Deleting char from buffer
         input_buffer[--buffer_index] = '\x00';
       }
