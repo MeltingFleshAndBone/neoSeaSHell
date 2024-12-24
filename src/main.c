@@ -115,7 +115,8 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
           if (cmd != NULL) {
             strncpy(input_buffer, cmd, input_buffer_size - 1);
             input_buffer[input_buffer_size - 1] = '\0';
-            cursor_index = buffer_index = strlen(input_buffer);
+            buffer_index = strlen(input_buffer);
+            cursor_index = 0;
             printf("%s", input_buffer);
           } else {
             history_index--;
@@ -190,11 +191,14 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
             (int)(input_buffer_size * DEFAULT_BUFFER_GROWTH_RATE);
         // casting the result to int to avoid issues with realloc
 
-        input_buffer = realloc(input_buffer, input_buffer_size);
-        if (input_buffer == NULL) {
+        char *temp = realloc(input_buffer, input_buffer_size);
+        if (temp == NULL) {
           perror("realloc");
-          break;
+          free(input_buffer);
+          return STAT_MEMALLOCERR;
         }
+
+        input_buffer = temp;
       }
 
       // Dynamically insert the character into the string
