@@ -28,20 +28,15 @@ To build SeaSHell from source, follow these steps:
 
 ```shell
 # Clone the repository
-https://github.com/MeltingFleshAndBone/SeaSHell
-
+git clone https://github.com/MeltingFleshAndBone/neoSeaSHell.git && \
 # Change into the repository directory
-cd SeaSHell
-
+cd neoSeaSHell && \
 # Create the build directory
-mkdir build
-
+mkdir build && \
 # Change into the build directory
-cd build
-
+cd build && \
 # Generate the Makefile with CMake
-cmake ../
-
+cmake ../ && \
 # Compile the shell
 make
 ```
@@ -50,17 +45,4 @@ After a successful build, the compiled binary will be located in the `build/bin/
 
 ```shell
 ./build/bin/SeaSHell
-```
-
-While it's not recommended, you can make it the default shell with
-```shell
-# Change into the build binary directory
-cd SeaSHell/build/bin
-
-# Moving the binary into usr/bin/ (optional)
-sudo mv SeaSHell /usr/bin
-
-# Setting it as the default shell
-sudo chsh $USER
-# Then type the path for the shell binary (e.g. /usr/bin/SeaSHell)
 ```
