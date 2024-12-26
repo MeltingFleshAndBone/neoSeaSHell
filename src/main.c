@@ -112,6 +112,21 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
           history_index++;
 
           char *cmd = get_history(history_index);
+
+          while (input_buffer_size <= strlen(cmd)) {
+            input_buffer_size =
+                (int)(input_buffer_size * DEFAULT_BUFFER_GROWTH_RATE);
+
+            char *tmp = realloc(input_buffer, input_buffer_size);
+            if (tmp == NULL) {
+              perror("realloc");
+              free(input_buffer);
+              return STAT_MEMALLOCERR;
+            }
+
+            input_buffer = tmp;
+          }
+
           if (cmd != NULL) {
             strncpy(input_buffer, cmd, input_buffer_size - 1);
             input_buffer[input_buffer_size - 1] = '\0';
@@ -131,6 +146,21 @@ int execution_loop(char *input_buffer, int input_buffer_size) {
           history_index--;
           if (history_index >= 0) {
             char *cmd = get_history(history_index);
+
+            while (input_buffer_size <= strlen(cmd)) {
+              input_buffer_size =
+                  (int)(input_buffer_size * DEFAULT_BUFFER_GROWTH_RATE);
+
+              char *tmp = realloc(input_buffer, input_buffer_size);
+              if (tmp == NULL) {
+                perror("realloc");
+                free(input_buffer);
+                return STAT_MEMALLOCERR;
+              }
+
+              input_buffer = tmp;
+            }
+
             if (cmd != NULL) {
               strncpy(input_buffer, cmd, input_buffer_size - 1);
               input_buffer[input_buffer_size - 1] = '\0';
